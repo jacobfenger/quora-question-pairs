@@ -137,17 +137,34 @@ The second approach was influenced by a user named ‘anokas’ who posted an ap
 
 \subsection{Analyse data}
 
-It is important to understand how our data looks like before we can train a good model. We first analyze how many samples there are in the train and test. Then a couple other things that can help us understanding the data. Are there many typos in the question? How many words are usually in a question? What are the words that appear the most often? How about the punctuations in the question?
+It is important to understand how our data looks like before we can train a good model. We first check how many samples there are in the train and test. Then a couple other things that can help us understanding the data. Are there many typos in the question? How many words are usually in a question? What are the words that appear the most often? How about the punctuations in the question?
 
 \subsection{Feature Extraction}
 
 TF-IDF approach
-Using wordcloud, we find that many words that appear very often doesn’t have significant impacts on whether these questions are duplicate or not. For example, from the picture we see that “good” appears extremely often in the questions. But we can’t really determine how similar two questions are based on the word “good”. It could even be misleading if there is a “not” precedent to “good”. 
+
+Using wordcloud, we find that many words that appear often doesn’t have significant impacts on whether these questions are duplicate or not. For example, from the picture we see that “good” appears extremely often in the questions. But we can’t really determine how similar two questions are based on the word “good”. It could even be misleading if there is a “not” precedent to “good”. It also makes sense to weigh "Bruce Lee" more than "the".
+
 A more valuable feature to look at will be TF-IDF (term-frequency-inverse-document-frequency). If a word that doesn’t appear very often in the database appears in the two questions we are comparing, then it is reasonable that we weigh this word more in the prediction of whether these two questions are duplicate. 
 
 \subsection{Training}
 
 We split our train.csv into training data and validation data. Using XGBoost, we generate a prediction csv for questions in test.csv. We get a score of 0.35372 on Kaggle.
+
+\section{Simple Approaches to Combining Models}
+
+Since we take different approaches within our team and generate two csv files, we start to thinking how can we take advantage of two good models and get a better submission. 
+
+But the challenge is how do we combine two confidence and generate a new reasonable confidence? What equation will produce a better result? I start with using average mean, then I also tried geometric mean. 
+ 
+
+\subsection{Average Mean of Confidence}
+
+We take the average mean of two confidence and generate our new submission. 
+
+\subsection{Geometric Mean of Confidence}
+
+We take the geometirc mean of two confidence and generate our new submission. 
 
 \section{Comparison of Results}
 
