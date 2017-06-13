@@ -41,7 +41,7 @@
   \And
   Spike Madden \\
   Oregon State University\\
-  \texttt{email} \\
+  \texttt{maddens@oregonstate.edu} \\
   \AND
   Chongxien Chen \\
   Oregon State University\\
@@ -135,6 +135,40 @@ we got reduced the log-loss by several points.
 \section{Approach \#2}
 
 \section{Comparison of Results}
+
+\section{First Place Solution}
+
+A member of the DL guys, who placed 1st in the competition, provided a summary
+of their approach to the Quora Question Pairs. They had a log loss score of
+0.11580.
+
+\subsection{Features}
+
+Embedding features include word embeddings, sentence embeddings and encoded
+question pairs. As discussed in a previous approach, Word2Vec was used for the
+word embeddings. Doc2Vec and Sent2Vec were used for sentence embeddings but
+were found to not be as informative as the word embeddings from Word2Vec. Classical text mining methods were used by tokenizing the strings and looking
+for similarity measures on bag of character n-grams, question length, capital
+letters and punctuation, and certain keywords like are, can and how. Structural
+features were extracted from graphs built from the edges between pairs of
+questions from the training and testing data sets.
+
+\subsection{Models}
+
+There were two architectures for the neural networks that were used: a siamese
+LSTM network with GloVe embeddings and a decomposable attention network with
+FastText embedding. The best single models were found to be these neural
+networks trained on both text sequences and the text mining and structural
+features.
+
+\subsection{Ensemble}
+
+They used stacking with 4 layers to combine their models. The first layer,
+consisting of about 300 models, includes various neutral networks, algorithms
+like XGB and LGBM as well as Scikit classification algorithms. The second layer
+consists of 150 models and includes the input features and hidden layers of the
+best L1 pure text EISM - Evolutionary Support Vector Machine Inference Model.
+The third layer consists of 2 linear models and the fourth is for blending.
 
 \section{Conclusion}
 
