@@ -20,6 +20,8 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{graphicx}       %Graphic
+\usepackage{float}
 
 \title{Deep Learning and Determining Duplicate Questions}
 
@@ -57,7 +59,7 @@
   This document contains the approach Team Jacob utilized to train a classifier
   for detecting whether questions are duplicates. We utilized Word2Vec embeddings
   for vectorizing the questions as well as Keras with a Tensorflow backend
-  for training.
+  for training. We also tried using TF-IDF feature and train the model with XGBoost.
 \end{abstract}
 
 \section{Introduction}
@@ -138,6 +140,11 @@ The second approach was influenced by a user named ‘anokas’ who posted an ap
 \subsection{Analyse data}
 
 It is important to understand how our data looks like before we can train a good model. We first check how many samples there are in the train and test. Then a couple other things that can help us understanding the data. Are there many typos in the question? How many words are usually in a question? What are the words that appear the most often? How about the punctuations in the question?
+%\begin{figure}[H]
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{images/wordCloud.png}
+%  \caption{Term frequency in the dataset.}
+%\end{figure}
 
 \subsection{Feature Extraction}
 
@@ -147,26 +154,19 @@ Using wordcloud, we find that many words that appear often doesn’t have signif
 
 A more valuable feature to look at will be TF-IDF (term-frequency-inverse-document-frequency). If a word that doesn’t appear very often in the database appears in the two questions we are comparing, then it is reasonable that we weigh this word more in the prediction of whether these two questions are duplicate. 
 
+We also avoid typos being weighed too high by requiring that a word at least need to appear twice to be considered in our TF-IDF approach. 
+
 \subsection{Training}
 
 We split our train.csv into training data and validation data. Using XGBoost, we generate a prediction csv for questions in test.csv. We get a score of 0.35372 on Kaggle.
 
 \section{Simple Approaches to Combining Models}
 
-Since we take different approaches within our team and generate two csv files, we start to thinking how can we take advantage of two good models and get a better submission. 
+Since we take different approaches within our team and generate two csv files, we start to thinking how can we take advantage of two good models and got a better submission. 
 
-But the challenge is how do we combine two confidence and generate a new reasonable confidence? What equation will produce a better result? I start with using average mean, then I also tried geometric mean. 
- 
+But the challenge is how do we combine two confidence and generate a new reasonable confidence? What equation will produce a better result? We were planing to try the using the average mean of two confidence. But the first approach took us too long to generate the submission on the server. So we end up don't have a chance to try it. Another approach we are going to use is geometric mean. Two take the square root of mutlied confidence. This approach may make more sense. 
 
-\subsection{Average Mean of Confidence}
-
-We take the average mean of two confidence and generate our new submission. 
-
-\subsection{Geometric Mean of Confidence}
-
-We take the geometirc mean of two confidence and generate our new submission. 
-
-\section{Comparison of Results}
+%\section{Comparison of Results}
 
 \section{First Place Solution}
 
@@ -204,7 +204,12 @@ The third layer consists of 2 linear models and the fourth is for blending.
 
 \section{Conclusion}
 
+Our first approach took too long to ran on the server that we don't get a submission.
+Our second approach generate a csv file and got a score of 0.35372 on Kaggle. 
+We would like to try ensembling our two models using average mean and geometric mean methods if 
+we have enough time. 
 \appendix
 \section*{Individual Contributions}
+
 
 \end{document}
